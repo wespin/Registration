@@ -1,0 +1,74 @@
+﻿@model Registration.ViewModels.StudentIndexData
+
+@{
+    ViewBag.Title = "Estudiantes";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Enrollmentdate</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Students)
+    {
+        string selectedRow = "";
+        if (item.ID == ViewBag.StudentId)
+        {
+            selectedRow = "success";
+        }
+        <tr class="@selectedRow">
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstMidName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnrollmentDate)
+            </td>
+            <td>
+                @{
+                    foreach (var enrollment in item.Enrollments)
+                    {
+                        @Html.ActionLink("Select", "Index", new { id = item.ID, courseID = enrollment.CourseID }) @enrollment.CourseID @:  @enrollment.Course.Title <br />
+                    }
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Select", "Index", new { id = item.ID }) |
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+</table>
+
+
+@if (Model.Classmates != null)
+{
+    <h3>
+        Students Enrolled in Selected Course de @ViewBag.NombreMateria
+    </h3>
+    <table class="table">
+        <tr>
+            <th>Nombre</th>
+        </tr>
+        @foreach (var item in Model.Classmates)
+        {
+            <tr>
+                <td>
+                    @item.FullName
+                </td>
+            </tr>
+        }
+    </table>
+}
